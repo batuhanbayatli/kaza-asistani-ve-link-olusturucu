@@ -25,7 +25,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Dikey ortalama */
+            justify-content: center;
             min-height: 100vh;
             text-align: center;
             overflow-x: hidden;
@@ -35,7 +35,7 @@
         .container {
             width: 100%;
             max-width: 450px;
-            flex: 1; /* İçeriği yukarı itmesi için */
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -117,7 +117,7 @@
 
         
         footer {
-            margin-top: 40px;
+            margin-top: 50px;
             padding-top: 20px;
             border-top: 1px solid #333;
             font-size: 12px;
@@ -125,11 +125,26 @@
             width: 100%;
         }
 
+        
+        .agency-link-btn {
+            display: inline-block;
+            background: #333;
+            color: #bbb;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+            border: 1px solid #444;
+        }
+        .agency-link-btn:hover { background: #444; color: white; }
+
         footer a { color: #888; text-decoration: none; transition: 0.3s; }
         footer a:hover { color: var(--primary); }
 
         details {
-            margin-top: 10px;
+            margin-top: 15px;
             text-align: left;
             background: #222;
             padding: 10px;
@@ -220,6 +235,10 @@
     </div>
 
     <footer>
+        <a href="olustur.html" class="agency-link-btn">
+            <i class="fas fa-link"></i> Acente misiniz? Link Oluşturun
+        </a>
+        
         <p>Geliştirici: <a href="https://www.linkedin.com/in/batuhanbayatlı/" target="_blank"><strong>Batuhan Bayatlı</strong></a></p>
         
         <details>
