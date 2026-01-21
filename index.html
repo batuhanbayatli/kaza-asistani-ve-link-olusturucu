@@ -63,9 +63,9 @@
             text-align: left;
         }
 
-        .card i { margin-right: 10px; width: 20px; text-align: center; }
-        .checklist-item { margin-bottom: 10px; display: flex; align-items: center; }
-        .checklist-item input { margin-right: 15px; transform: scale(1.5); }
+        .checklist-item { margin-bottom: 12px; display: flex; align-items: center; font-size: 15px; }
+        .checklist-item i { margin-right: 12px; width: 20px; text-align: center; color: var(--primary); }
+        .checklist-item input { margin-right: 15px; transform: scale(1.4); }
 
         
         .btn {
@@ -83,6 +83,7 @@
             text-decoration: none;
             color: white;
             box-sizing: border-box;
+            transition: 0.2s;
         }
         
         .btn:active { transform: scale(0.97); }
@@ -116,6 +117,57 @@
         .loading { font-size: 14px; color: var(--warning); display: none; margin-top: 10px; }
 
         
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 999;
+            overflow-y: auto; /* Kaydırma */
+            padding: 20px;
+            box-sizing: border-box;
+            animation: fadeIn 0.3s;
+        }
+        .modal-content {
+            background: #222;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: left;
+            position: relative;
+        }
+        .close-modal-btn {
+            position: sticky;
+            top: 0;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            z-index: 1000;
+        }
+        .modal-step-num {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            text-align: center; line-height: 24px;
+            margin-right: 10px; font-weight: bold; font-size: 14px;
+        }
+        
+        details { background: #333; padding: 10px; border-radius: 8px; margin-top: 15px; }
+        summary { cursor: pointer; color: var(--success); font-weight: bold; outline: none; }
+        .example-img { width: 100%; height: auto; border-radius: 5px; margin-top: 10px; border: 1px solid #555; }
+
+        
         footer {
             margin-top: 50px;
             padding-top: 20px;
@@ -124,35 +176,14 @@
             color: #666;
             width: 100%;
         }
-
-        
         .agency-link-btn {
             display: inline-block;
-            background: #333;
-            color: #bbb;
-            padding: 10px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 13px;
-            margin-bottom: 15px;
-            transition: 0.3s;
-            border: 1px solid #444;
+            background: #333; color: #bbb;
+            padding: 10px 20px; border-radius: 20px;
+            text-decoration: none; font-size: 13px;
+            margin-bottom: 15px; border: 1px solid #444;
         }
-        .agency-link-btn:hover { background: #444; color: white; }
-
-        footer a { color: #888; text-decoration: none; transition: 0.3s; }
-        footer a:hover { color: var(--primary); }
-
-        details {
-            margin-top: 15px;
-            text-align: left;
-            background: #222;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        summary { cursor: pointer; color: #888; font-weight: bold; outline: none; }
-        .legal-text { margin-top: 10px; font-size: 11px; line-height: 1.5; color: #777; }
-
+        footer a { color: #888; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -191,18 +222,15 @@
         <div id="step-4" class="step">
             <h1>Fotoğraflar 📸</h1>
             <p>Sigorta şirketi için en kritik adım.</p>
-            
             <div class="card">
                 <div class="checklist-item"><input type="checkbox"> Geniş açıdan kaza anı (4 köşe)</div>
                 <div class="checklist-item"><input type="checkbox"> Plakalar görünecek şekilde hasar</div>
                 <div class="checklist-item"><input type="checkbox"> Şerit çizgileri ve yol durumu</div>
             </div>
-
             <label class="camera-btn" for="cameraInput">
                 <i class="fas fa-camera fa-2x"></i><br>Kamerayı Aç
             </label>
             <input type="file" id="cameraInput" accept="image/*" capture="environment">
-            
             <button class="btn btn-primary" onclick="nextStep(5)">Fotoğrafları Çektim</button>
             <button class="btn btn-outline" onclick="prevStep(3)">Geri</button>
         </div>
@@ -214,6 +242,10 @@
                 <div class="checklist-item"><i class="fas fa-file-contract"></i> Ruhsatını ve Poliçesini isteyin.</div>
                 <div class="checklist-item"><i class="fas fa-pen"></i> Kaza Tespit Tutanağını doldurun.</div>
                 <div class="checklist-item"><i class="fas fa-signature"></i> İmzaları atmayı unutmayın!</div>
+                
+                <button onclick="openModal()" style="margin-top:15px; background:transparent; border:1px solid #3498db; color:#3498db; padding:10px; border-radius:8px; font-weight:bold; width:100%; cursor:pointer;">
+                    <i class="fas fa-question-circle"></i> Tutanak Nasıl Doldurulur?
+                </button>
             </div>
             <button class="btn btn-success" onclick="prepareWhatsApp()">Her Şey Tamam <i class="fas fa-check" style="margin-left:10px"></i></button>
             <button class="btn btn-outline" onclick="prevStep(4)">Geri</button>
@@ -223,7 +255,6 @@
             <div style="font-size: 50px; margin-bottom: 20px;">📍</div>
             <h1>Konum Gönder</h1>
             <p>Acentenize durumu bildirin. WhatsApp açıldığında, az önce çektiğiniz fotoğrafları sohbete ekleyin.</p>
-            
             <button class="btn btn-success" onclick="sendWhatsApp()">
                 <i class="fab fa-whatsapp" style="margin-right:10px"></i> WhatsApp'ı Aç & Gönder
             </button>
@@ -234,21 +265,45 @@
 
     </div>
 
+    <div id="tutanakModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal()">❌ REHBERİ KAPAT (Asistana Dön)</button>
+            
+            <h2 style="color:var(--primary); margin-top:0;">📝 Tutanak Rehberi</h2>
+
+            <div class="alert-box" style="margin-top:20px;">
+                <strong style="color:var(--danger)">⚠️ DİKKAT: POLİS ÇAĞIRIN!</strong>
+                <p style="font-size:13px; color:#ccc; margin-top:5px;">Aşağıdakilerden BİRİ varsa tutanak tutmayın:</p>
+                <ul style="font-size:13px; color:#bbb; padding-left:15px; text-align:left;">
+                    <li>Yaralanma veya ölüm varsa</li>
+                    <li>Sürücü ehliyetsiz veya alkollüyse</li>
+                    <li>Kamu malına zarar verildiyse</li>
+                </ul>
+                <a href="tel:112" class="btn btn-danger" style="padding:10px; font-size:14px; margin-top:10px;">POLİSİ ARA (112)</a>
+            </div>
+
+            <div style="text-align:left; color:#ddd;">
+                <p><span class="modal-step-num">1</span> <strong>A ve B Aracı:</strong> Kimin A kimin B olacağına karar verip o sütunu doldurun.</p>
+                <p><span class="modal-step-num">2</span> <strong>Belgeler:</strong> T.C. No ve Şasi No'yu ruhsattan bakarak hatasız yazın.</p>
+                <p><span class="modal-step-num">3</span> <strong>Çizim:</strong> Araçları kutucuk olarak çizin, gidiş yönünü okla (➡) gösterin.</p>
+                <p><span class="modal-step-num">4</span> <strong>İMZA:</strong> En alttaki iki kutuyu da ıslak imza ile imzalayın. İmzasız tutanak geçersizdir!</p>
+            </div>
+
+            <details>
+                <summary>📸 Örnek Doldurulmuş Tutanak</summary>
+                <img src="ornek.jpg" class="example-img" alt="Örnek Tutanak">
+                <p style="font-size:10px; color:#777; margin-top:5px;">*Temsili görseldir.</p>
+            </details>
+        </div>
+    </div>
+
     <footer>
-        <a href="olustur.html" class="agency-link-btn">
-            <i class="fas fa-link"></i> Acente misiniz? Link Oluşturun
-        </a>
-        
+        <a href="olustur.html" class="agency-link-btn"><i class="fas fa-link"></i> Acente misiniz? Link Oluşturun</a>
         <p>Geliştirici: <a href="https://www.linkedin.com/in/batuhanbayatlı/" target="_blank"><strong>Batuhan Bayatlı</strong></a></p>
-        
-        <details>
-            <summary>Yasal Uyarı & Gizlilik</summary>
-            <div class="legal-text">
-                Bu uygulama sadece kaza anında süreç yönetimine yardımcı olmak amacıyla tasarlanmış bir arayüzdür. 
-                <br><br>
-                1. Bu uygulama <strong>hiçbir veriyi sunucularda saklamaz</strong>. Fotoğraflarınız ve konumunuz sadece kendi telefonunuzda işlenir ve doğrudan WhatsApp'a yönlendirilir.<br>
-                2. Uygulama acil durum çağrısı (112) yerine geçmez.<br>
-                3. Oluşabilecek hukuki veya maddi kayıplardan geliştirici sorumlu tutulamaz. Kullanıcı, yönlendirmeleri kendi iradesiyle uygular.
+        <details style="background:none; border:none; padding:0;">
+            <summary style="font-size:12px; color:#666; text-align:center; justify-content:center;">Yasal Uyarı & Gizlilik</summary>
+            <div style="font-size:11px; color:#555; margin-top:10px;">
+                Bu uygulama verileri kaydetmez. Sorumluluk kullanıcıya aittir. 112 yerine geçmez.
             </div>
         </details>
     </footer>
@@ -258,6 +313,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         let agencyPhone = urlParams.get('tel') || DEFAULT_PHONE;
 
+        // Sayfa geçişleri
         function nextStep(step) {
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
             document.getElementById('step-' + step).classList.add('active');
@@ -268,6 +324,15 @@
             document.getElementById('step-' + step).classList.add('active');
         }
 
+        
+        function openModal() {
+            document.getElementById('tutanakModal').style.display = 'block';
+        }
+        function closeModal() {
+            document.getElementById('tutanakModal').style.display = 'none';
+        }
+
+        
         let mapLink = "";
         let finalMessage = "Merhaba, bir kaza geçirdim. Durumum iyi. Fotoğrafları çektim, bu mesajın altına ekleyip göndereceğim.";
 
