@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kaza Asistanı | Batuhan Bayatlı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --primary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --card-bg: #2c3e50;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Dikey ortalama */
+            min-height: 100vh;
+            text-align: center;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            flex: 1; /* İçeriği yukarı itmesi için */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        
+        .step { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .step.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-size: 26px; margin-bottom: 10px; font-weight: 700; }
+        p { font-size: 16px; line-height: 1.6; color: #bbb; margin-bottom: 25px; }
+
+        
+        .card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+
+        .card i { margin-right: 10px; width: 20px; text-align: center; }
+        .checklist-item { margin-bottom: 10px; display: flex; align-items: center; }
+        .checklist-item input { margin-right: 15px; transform: scale(1.5); }
+
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            box-sizing: border-box;
+        }
+        
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background-color: var(--primary); }
+        .btn-success { background-color: var(--success); }
+        .btn-danger { background-color: var(--danger); }
+        .btn-outline { background: transparent; border: 2px solid #555; color: #aaa; }
+        
+        
+        .alert-box {
+            background: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid var(--danger);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .camera-btn {
+            background: #444;
+            border: 2px dashed #666;
+            color: #ddd;
+            padding: 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="file"] { display: none; }
+        .loading { font-size: 14px; color: var(--warning); display: none; margin-top: 10px; }
+
+        
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            font-size: 12px;
+            color: #666;
+            width: 100%;
+        }
+
+        footer a { color: #888; text-decoration: none; transition: 0.3s; }
+        footer a:hover { color: var(--primary); }
+
+        details {
+            margin-top: 10px;
+            text-align: left;
+            background: #222;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        summary { cursor: pointer; color: #888; font-weight: bold; outline: none; }
+        .legal-text { margin-top: 10px; font-size: 11px; line-height: 1.5; color: #777; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="step-1" class="step active">
+            <div style="font-size: 50px; margin-bottom: 20px;">👋</div>
+            <h1>Geçmiş Olsun.</h1>
+            <p>Sakin olun. Sizi adım adım yönlendireceğim. Amacımız süreci hatasız tamamlamak.</p>
+            <button class="btn btn-primary" onclick="nextStep(2)">Başlayalım <i class="fas fa-arrow-right" style="margin-left:10px"></i></button>
+        </div>
+
+        <div id="step-2" class="step">
+            <div style="font-size: 50px; margin-bottom: 20px;">🚑</div>
+            <h1>Yaralanan Var mı?</h1>
+            <p>Kendinizi ve diğer araçtakileri kontrol edin. En ufak şüpheniz varsa 112'yi arayın.</p>
+            <a href="tel:112" class="btn btn-danger"><i class="fas fa-phone"></i> EVET - 112'yi Ara</a>
+            <button class="btn btn-success" onclick="nextStep(3)">HAYIR - Herkes İyi</button>
+        </div>
+
+        <div id="step-3" class="step">
+            <h1>Önce Güvenlik ⚠️</h1>
+            <div class="card">
+                <div class="checklist-item"><i class="fas fa-exclamation-triangle" style="color:var(--warning)"></i> Dörtlüleri yakın.</div>
+                <div class="checklist-item"><i class="fas fa-vest"></i> Varsa reflektör koyun.</div>
+                <div class="checklist-item"><i class="fas fa-car-crash"></i> Başka kazaya sebep olmayacak bir yerde durun.</div>
+            </div>
+            <div class="alert-box">
+                <strong>DİKKAT:</strong> Tutanak tutulana veya polis gelene kadar araçları yerinden OYNATMAYIN (Trafiği tamamen tıkamıyorsa).
+            </div>
+            <button class="btn btn-primary" onclick="nextStep(4)">Güvenliği Aldım, Devam</button>
+            <button class="btn btn-outline" onclick="prevStep(2)">Geri</button>
+        </div>
+
+        <div id="step-4" class="step">
+            <h1>Fotoğraflar 📸</h1>
+            <p>Sigorta şirketi için en kritik adım.</p>
+            
+            <div class="card">
+                <div class="checklist-item"><input type="checkbox"> Geniş açıdan kaza anı (4 köşe)</div>
+                <div class="checklist-item"><input type="checkbox"> Plakalar görünecek şekilde hasar</div>
+                <div class="checklist-item"><input type="checkbox"> Şerit çizgileri ve yol durumu</div>
+            </div>
+
+            <label class="camera-btn" for="cameraInput">
+                <i class="fas fa-camera fa-2x"></i><br>Kamerayı Aç
+            </label>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment">
+            
+            <button class="btn btn-primary" onclick="nextStep(5)">Fotoğrafları Çektim</button>
+            <button class="btn btn-outline" onclick="prevStep(3)">Geri</button>
+        </div>
+
+        <div id="step-5" class="step">
+            <h1>Tutanak & Evraklar 📝</h1>
+            <div class="card">
+                <div class="checklist-item"><i class="fas fa-id-card"></i> Karşı tarafın Ehliyetini isteyin.</div>
+                <div class="checklist-item"><i class="fas fa-file-contract"></i> Ruhsatını ve Poliçesini isteyin.</div>
+                <div class="checklist-item"><i class="fas fa-pen"></i> Kaza Tespit Tutanağını doldurun.</div>
+                <div class="checklist-item"><i class="fas fa-signature"></i> İmzaları atmayı unutmayın!</div>
+            </div>
+            <button class="btn btn-success" onclick="prepareWhatsApp()">Her Şey Tamam <i class="fas fa-check" style="margin-left:10px"></i></button>
+            <button class="btn btn-outline" onclick="prevStep(4)">Geri</button>
+        </div>
+
+        <div id="step-6" class="step">
+            <div style="font-size: 50px; margin-bottom: 20px;">📍</div>
+            <h1>Konum Gönder</h1>
+            <p>Acentenize durumu bildirin. WhatsApp açıldığında, az önce çektiğiniz fotoğrafları sohbete ekleyin.</p>
+            
+            <button class="btn btn-success" onclick="sendWhatsApp()">
+                <i class="fab fa-whatsapp" style="margin-right:10px"></i> WhatsApp'ı Aç & Gönder
+            </button>
+            <div id="locStatus" class="loading">Konum alınıyor...</div>
+            <br>
+            <button class="btn btn-outline" onclick="location.reload()">Başa Dön</button>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Geliştirici: <a href="https://www.linkedin.com/in/batuhanbayatlı/" target="_blank"><strong>Batuhan Bayatlı</strong></a></p>
+        
+        <details>
+            <summary>Yasal Uyarı & Gizlilik</summary>
+            <div class="legal-text">
+                Bu uygulama sadece kaza anında süreç yönetimine yardımcı olmak amacıyla tasarlanmış bir arayüzdür. 
+                <br><br>
+                1. Bu uygulama <strong>hiçbir veriyi sunucularda saklamaz</strong>. Fotoğraflarınız ve konumunuz sadece kendi telefonunuzda işlenir ve doğrudan WhatsApp'a yönlendirilir.<br>
+                2. Uygulama acil durum çağrısı (112) yerine geçmez.<br>
+                3. Oluşabilecek hukuki veya maddi kayıplardan geliştirici sorumlu tutulamaz. Kullanıcı, yönlendirmeleri kendi iradesiyle uygular.
+            </div>
+        </details>
+    </footer>
+
+    <script>
+        const DEFAULT_PHONE = ""; 
+        const urlParams = new URLSearchParams(window.location.search);
+        let agencyPhone = urlParams.get('tel') || DEFAULT_PHONE;
+
+        function nextStep(step) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-' + step).classList.add('active');
+        }
+
+        function prevStep(step) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-' + step).classList.add('active');
+        }
+
+        let mapLink = "";
+        let finalMessage = "Merhaba, bir kaza geçirdim. Durumum iyi. Fotoğrafları çektim, bu mesajın altına ekleyip göndereceğim.";
+
+        function prepareWhatsApp() {
+            nextStep(6);
+            const statusDiv = document.getElementById('locStatus');
+            statusDiv.style.display = 'block';
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        mapLink = `https://maps.google.com/?q=${lat},${lng}`;
+                        statusDiv.innerHTML = "Konum alındı ✅";
+                        statusDiv.style.color = "#2ecc71";
+                    },
+                    (error) => {
+                        statusDiv.innerHTML = "GPS kapalı, sadece mesaj gönderilecek.";
+                        statusDiv.style.color = "#e74c3c";
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                statusDiv.innerHTML = "Konum desteklenmiyor.";
+            }
+        }
+
+        function sendWhatsApp() {
+            if (!agencyPhone) {
+                alert("HATA: Acente numarası bulunamadı.");
+                return;
+            }
+            let textToSend = finalMessage;
+            if (mapLink) textToSend += " Konumum: " + mapLink;
+            window.location.href = `https://wa.me/${agencyPhone}?text=${encodeURIComponent(textToSend)}`;
+        }
+    </script>
+</body>
+</html>

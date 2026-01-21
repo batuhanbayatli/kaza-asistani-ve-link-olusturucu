@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaza Asistanı - Link Oluşturucu | Batuhan Bayatlı</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        input {
+            width: 100%; padding: 15px; margin-bottom: 15px;
+            border: 2px solid #ecf0f1; border-radius: 8px; font-size: 16px; box-sizing: border-box;
+        }
+        button {
+            width: 100%; padding: 15px; border: none; border-radius: 8px;
+            font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+        .btn-create { background: #3498db; color: white; }
+        .btn-create:hover { background: #2980b9; }
+        
+        .result-area { margin-top: 20px; display: none; background: #e8f6f3; padding: 15px; border-radius: 8px; }
+        .link-text { word-break: break-all; color: #27ae60; font-family: monospace; font-size: 13px; display: block; margin-bottom: 10px;}
+        .btn-copy { background: #27ae60; color: white; }
+
+        footer { margin-top: 30px; font-size: 12px; color: #999; text-align: center; line-height: 1.5; }
+        footer a { color: #777; text-decoration: none; border-bottom: 1px dotted #ccc; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>🔗 Link Oluşturucu</h2>
+        <p style="color:#7f8c8d; font-size:14px;">Müşterilerinize göndereceğiniz "Kaza Asistanı" linkini oluşturmak için numaranızı girin.</p>
+
+        <input type="number" id="phoneInput" placeholder="Örn: 905551234567">
+        <button class="btn-create" onclick="createLink()">Linkimi Oluştur</button>
+
+        <div id="resultBox" class="result-area">
+            <span id="generatedLink" class="link-text"></span>
+            <button class="btn-copy" onclick="copyLink()">Kopyala</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Geliştirici: <a href="https://www.linkedin.com/in/batuhanbayatlı/" target="_blank">Batuhan Bayatlı</a></p>
+        <p><strong>Gizlilik Notu:</strong> Girdiğiniz telefon numarası sunucularımıza kaydedilmez.<br>Sadece link oluşturmak için tarayıcınızda işlenir.</p>
+    </footer>
+
+    <script>
+        function createLink() {
+            const phoneInput = document.getElementById('phoneInput');
+            let phone = phoneInput.value.replace(/\s/g, ''); 
+
+            if (phone.length < 10) {
+                alert("Lütfen geçerli bir numara girin.");
+                return;
+            }
+
+            let baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
+            if(baseUrl.endsWith('olustur.html')) baseUrl = baseUrl.replace('/olustur.html', '');
+            
+            const finalUrl = `${baseUrl}/index.html?tel=${phone}`;
+            document.getElementById('generatedLink').textContent = finalUrl;
+            document.getElementById('resultBox').style.display = 'block';
+        }
+
+        function copyLink() {
+            const linkText = document.getElementById('generatedLink').textContent;
+            navigator.clipboard.writeText(linkText).then(() => alert("Link kopyalandı!"));
+        }
+    </script>
+</body>
+</html>
